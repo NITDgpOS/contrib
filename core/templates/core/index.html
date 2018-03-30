@@ -4,14 +4,18 @@
 <div class="container">
   <form method="post">
     {% csrf_token %}
-    {{ form }}
+    {{ form.non_field_errors }}
+    {% for field in form.visible_fields %}
+      <p>{{ field.label_tag }}{{ field }}</p>
+      {% for error in field.errors %}
+        <p style="color:red">{{ error }}</p>
+      {% endfor %}
+    {% endfor %}
     <button type="submit">Register</button>
   </form>
   {% if message %}
-  <h3>{{ message }}</h3>
+    <h3>{{ message }}</h3>
   {% endif %}
-  {% if error %}
-  <h3 style="color:red">{{ error }}</h3>
-  {% endif %}
+  <!--  -->
 </div>
 {% endblock %}

@@ -26,5 +26,4 @@ class HomeView(TemplateView):
             args = {'form': form, 'message': message}
             return render(request, self.template, args)
 
-        args = {'form': form, 'error': "Sorry! Error!"}
-        return render(request, self.template, args)
+        return render(request, self.template, {'form': form})
