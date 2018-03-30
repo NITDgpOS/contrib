@@ -9,8 +9,9 @@ from core.models import User
 class RegistrationForm(forms.ModelForm):
     username = forms.CharField(max_length=100)
 
-    def clean_username(self):
-        username = self.cleaned_data.get('username')
+    def clean(self):
+        cleaned_data = super(RegistrationForm, self).clean()
+        username = cleaned_data.get('username')
         url = 'https://api.github.com/users/{}'.format(username)
         r = requests.get(url)
         if r.status_code != 200:
@@ -18,7 +19,7 @@ class RegistrationForm(forms.ModelForm):
                 _("No github account found related to this username"),
                 code='not_found'
             )
-        return username
+        cleaned_data['name'] = r.json().get('name')
 
     class Meta:
         model = User

@@ -21,9 +21,8 @@ class HomeView(TemplateView):
         if form.is_valid():
             username = form.cleaned_data.get('username')
             form.save()
-            form = RegistrationForm()
             message = "Hello {}! You have been registered!".format(username)
-            args = {'form': form, 'message': message}
+            args = {'form': RegistrationForm(), 'message': message}
             return render(request, self.template, args)
 
         return render(request, self.template, {'form': form})
