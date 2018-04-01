@@ -1,6 +1,8 @@
 from django.views.generic import TemplateView
 from django.shortcuts import render
 
+from core.models import UserProfile
+
 
 class HomeView(TemplateView):
     template = 'core/index.html'
@@ -8,8 +10,12 @@ class HomeView(TemplateView):
     def get(self, request):
         """Handle get requests to the homepage.
         """
-        context = {'is_authenticated': False}
+        users = UserProfile.objects.all()
+        context = {
+            'is_authenticated': False,
+            'users': users.order_by('-contributions', '-contribution_points')
+        }
         if request.user.is_authenticated:
             context['is_authenticated'] = True
-            context['user'] = request.user
+            context['current_user'] = request.user
         return render(request, self.template, context)

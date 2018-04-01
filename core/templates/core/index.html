@@ -4,10 +4,24 @@
 <div class="container">
   {% if is_authenticated %}
     <h2>Homepage</h2>
-    <p>Hello {{ user.username }}</p>
+    <p>Hello {{ current_user.username }}</p>
     <a href="/logout">Logout</a>
   {% else %}
     <a href="{% url 'social:begin' 'github' %}">Login with GitHub</a><br>
   {% endif %}
+  <table>
+    <tr>
+      <th>Name</th>
+      <th>Github Handle</th>
+      <th>Contributions</th>
+    </tr>
+    {% for user in users %}
+    <tr>
+      <td>{{ user.user.username }}</td>
+      <td>{{ user.name }}</td>
+      <td>{{ user.contributions }}</td>
+    </tr>
+    {% endfor %}
+  </table>
 </div>
 {% endblock %}
