@@ -2,20 +2,12 @@
 
 {% block content %}
 <div class="container">
-  <form method="post">
-    {% csrf_token %}
-    {{ form.non_field_errors }}
-    {% for field in form.visible_fields %}
-      <p>{{ field.label_tag }}{{ field }}</p>
-      {% for error in field.errors %}
-        <p style="color:red">{{ error }}</p>
-      {% endfor %}
-    {% endfor %}
-    <button type="submit">Register</button>
-  </form>
-  {% if message %}
-    <h3>{{ message }}</h3>
+  {% if is_authenticated %}
+    <h2>Homepage</h2>
+    <p>Hello {{ user.username }}</p>
+    <a href="/logout">Logout</a>
+  {% else %}
+    <a href="{% url 'social:begin' 'github' %}">Login with GitHub</a><br>
   {% endif %}
-  <!--  -->
 </div>
 {% endblock %}
