@@ -113,11 +113,9 @@ class HomeViewTestCase(TestCase):
     def test_users_context(self):
         response = self.client.get(reverse('index'))
         queryset = response.context['users']
-        ordered_queryset = sorted(
-            queryset,
-            key=lambda user: (user.contributions, user.contribution_points),
-            reverse=True
-        )
+        ordered_queryset = UserProfile.objects.all().order_by(
+            '-contributions', '-contribution_points'
+        )[:10]
         self.assertEqual(len(queryset), 10)
         self.assertFalse(response.context['is_authenticated'])
         for i in range(len(queryset)):
