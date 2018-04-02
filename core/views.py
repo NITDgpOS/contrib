@@ -1,21 +1,20 @@
-from django.views.generic import TemplateView
+from django.views.generic.list import ListView
 from django.shortcuts import render
 
 from core.models import UserProfile
 
 
-class HomeView(TemplateView):
-    template = 'core/index.html'
+class HomeView(ListView):
+    template_name = 'core/index.html'
+    context_object_name = 'users'
 
-    def get(self, request):
-        """Handle get requests to the homepage.
-        """
-        users = UserProfile.objects.all()
-        context = {
-            'is_authenticated': False,
-            'users': users.order_by('-contributions', '-contribution_points')
-        }
-        if request.user.is_authenticated:
-            context['is_authenticated'] = True
-            context['current_user'] = request.user
-        return render(request, self.template, context)
+    def get_queryset(self):
+        return UserProfile.objects.all().order_by(
+            '-contributions', '-contribution_points'
+        )[:10]
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['is_authenticated'] = self.request.user.is_authenticated
+        context['current_user'] = self.request.user
+        return context
