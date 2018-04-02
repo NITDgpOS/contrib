@@ -2,8 +2,7 @@ from core.models import UserProfile
 
 
 def save_profile(backend, user, response, *args, **kwargs):
-    """Custom pipeline to set the name of the UserProfile object.
-    """
+    """Custom pipeline to set the name of the UserProfile object."""
     if backend.name == 'github':
         try:
             userprofile = UserProfile.objects.get(user=user)
