@@ -1,12 +1,15 @@
-from django.test import TestCase
-from unittest.mock import patch
+import random
 
-from django.contrib.auth.models import User
+from django.test import TestCase, Client
+from unittest.mock import patch
+from django.urls import reverse
+
+from django.contrib.auth.models import User, AnonymousUser
 from core.models import UserProfile
 from core.pipeline import save_profile
 
 
-class UserProfileTestCase(TestCase):
+class UserProfileModelTestCase(TestCase):
     """Test the UserProfile model."""
 
     def setUp(self):
@@ -80,4 +83,61 @@ class SaveProfilePipelineTestCase(TestCase):
         self.assertEqual(
             UserProfile.objects.get(user=self.test_user).name,
             "Test User 2"
+        )
+
+class HomeViewTestCase(TestCase):
+    """Test the HomeView."""
+
+    @classmethod
+    def setUpTestData(cls):
+        cls.client = Client()
+        cls.test_users = []
+        for i in range(13):
+            cls.test_users.append(User.objects.create_user(
+                username='testuser{}'.format(i+1),
+                password='12345678'
+            ))
+        for user in cls.test_users:
+            UserProfile.objects.create(
+                user=user,
+                contributions=random.randint(70,401),
+                contribution_points=random.randint(100,1001)
+            )
+
+    def test_get_request_to_the_view(self):
+        url = reverse('index')
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+
+
+    def test_users_context(self):
+        response = self.client.get(reverse('index'))
+        queryset = response.context['users']
+        ordered_queryset = sorted(
+            queryset,
+            key=lambda user: (user.contributions, user.contribution_points),
+            reverse=True
+        )
+        self.assertEqual(len(queryset), 10)
+        self.assertFalse(response.context['is_authenticated'])
+        for i in range(len(queryset)):
+            self.assertEqual(
+                queryset[i].user.username,
+                ordered_queryset[i].user.username
+            )
+
+    def test_other_context_when_logged_out(self):
+        response = self.client.get(reverse('index'))
+        self.assertFalse(response.context['is_authenticated'])
+        self.assertTrue(
+            isinstance(response.context['current_user'], AnonymousUser)
+        )
+
+    def test_other_context_when_logged_in(self):
+        login = self.client.login(username='testuser1', password='12345678')
+        response = self.client.get(reverse('index'))
+        self.assertTrue(response.context['is_authenticated'])
+        self.assertEqual(
+            response.context['current_user'].username,
+            'testuser1'
         )
