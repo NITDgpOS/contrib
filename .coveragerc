@@ -1,0 +1,6 @@
+[run]
+omit =
+  */.local/*
+[report]
+exclude_lines =
+  except ImportError as exc:

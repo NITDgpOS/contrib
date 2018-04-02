@@ -8,6 +8,7 @@ django = "*"
 python-decouple = "*"
 requests = "*"
 social-auth-app-django = "*"
+coverage = "*"
 
 [dev-packages]
 
