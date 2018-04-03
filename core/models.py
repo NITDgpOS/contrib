@@ -1,9 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-from django.dispatch import receiver
-from django.db.models.signals import post_save
 
-from core.utils import get_repositories
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -25,17 +22,3 @@ class Repository(models.Model):
 
     def __str__(self):
         return self.repo
-
-
-@receiver(post_save, sender=UserProfile)
-def save_repositories(sender, **kwargs):
-    """Save the repositories of a user when its UserProfile object is saved."""
-    if kwargs['created']:
-        username = kwargs['instance'].user.username
-        repos = get_repositories(username)
-        for repo in repos:
-            Repository.objects.create(
-                owner=kwargs['instance'],
-                repo=repo['full_name'],
-                is_fork=repo['fork']
-            )
