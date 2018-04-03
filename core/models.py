@@ -1,10 +1,9 @@
-import requests
-
 from django.db import models
 from django.contrib.auth.models import User
 from django.dispatch import receiver
 from django.db.models.signals import post_save
 
+from core.utils import get_repositories
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -29,18 +28,14 @@ class Repository(models.Model):
 
 
 @receiver(post_save, sender=UserProfile)
-def save_repositories(sender, instance, created, **kwargs):
+def save_repositories(sender, **kwargs):
     """Save the repositories of a user when its UserProfile object is saved."""
-    if created:
-        username = instance.user.username
-        repos_url = 'https://api.github.com/users/{}/repos'.format(username)
-        response = requests.get(repos_url)
-        repos = []
-        if response.status_code == 200:
-            repos = response.json()
+    if kwargs['created']:
+        username = kwargs['instance'].user.username
+        repos = get_repositories(username)
         for repo in repos:
             Repository.objects.create(
-                owner=instance,
+                owner=kwargs['instance'],
                 repo=repo['full_name'],
                 is_fork=repo['fork']
             )
