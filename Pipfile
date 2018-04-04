@@ -9,6 +9,7 @@ python-decouple = "*"
 requests = "*"
 social-auth-app-django = "*"
 coverage = "*"
+"flake8" = "*"
 
 [dev-packages]
 

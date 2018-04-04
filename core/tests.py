@@ -62,7 +62,7 @@ class SaveProfilePipelineTestCase(TestCase):
         self.assertEqual(len(UserProfile.objects.all()), 0)
 
     @patch('social_core.backends.github.GithubOAuth2')
-    def test_when_backend_is_github_and_user_is_not_present(self, mock_backend):
+    def test_when_backend_is_github_and_user_not_present(self, mock_backend):
         mock_backend.name = 'github'
         save_profile(mock_backend, self.test_user, self.response)
         self.assertEqual(len(UserProfile.objects.all()), 1)
@@ -74,16 +74,14 @@ class SaveProfilePipelineTestCase(TestCase):
     @patch('social_core.backends.github.GithubOAuth2')
     def test_when_backend_is_github_and_user_is_present(self, mock_backend):
         mock_backend.name = 'github'
-        test_userprofile = UserProfile.objects.create(
-            user=self.test_user,
-            name="Test User 2"
-        )
+        UserProfile.objects.create(user=self.test_user, name="Test User 2")
         save_profile(mock_backend, self.test_user, self.response)
         self.assertEqual(len(UserProfile.objects.all()), 1)
         self.assertEqual(
             UserProfile.objects.get(user=self.test_user).name,
             "Test User 2"
         )
+
 
 class HomeViewTestCase(TestCase):
     """Test the HomeView."""
@@ -100,15 +98,14 @@ class HomeViewTestCase(TestCase):
         for user in cls.test_users:
             UserProfile.objects.create(
                 user=user,
-                contributions=random.randint(70,401),
-                contribution_points=random.randint(100,1001)
+                contributions=random.randint(70, 401),
+                contribution_points=random.randint(100, 1001)
             )
 
     def test_get_request_to_the_view(self):
         url = reverse('index')
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
-
 
     def test_users_context(self):
         response = self.client.get(reverse('index'))
@@ -132,7 +129,7 @@ class HomeViewTestCase(TestCase):
         )
 
     def test_other_context_when_logged_in(self):
-        login = self.client.login(username='testuser1', password='12345678')
+        self.client.login(username='testuser1', password='12345678')
         response = self.client.get(reverse('index'))
         self.assertTrue(response.context['is_authenticated'])
         self.assertEqual(

@@ -1,5 +1,4 @@
 from django.views.generic.list import ListView
-from django.shortcuts import render
 
 from core.models import UserProfile
 
