@@ -7,6 +7,7 @@ class UserProfile(models.Model):
     name = models.CharField(max_length=100, blank=True)
     contributions = models.IntegerField(default=0)
     contribution_points = models.IntegerField(default=0)
+    last_updated = models.DateTimeField(null=True)
 
     def __str__(self):
         return self.user.username
