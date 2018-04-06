@@ -1,10 +1,11 @@
 import random
+import datetime
 
 from django.test import TestCase, Client
 from unittest.mock import patch
 from django.urls import reverse
-
 from django.contrib.auth.models import User, AnonymousUser
+
 from core.models import UserProfile
 from core.pipeline import save_profile
 
@@ -39,6 +40,11 @@ class UserProfileModelTestCase(TestCase):
             isinstance(self.test_userprofile.contribution_points, int)
         )
         self.assertEqual(self.test_userprofile.contribution_points, 0)
+
+    def test_last_updated_label(self):
+        self.assertTrue(
+            isinstance(self.test_userprofile.last_updated, datetime.datetime)
+        )
 
     def test_object_name_is_username(self):
         self.assertEqual(self.test_userprofile.user.username,
