@@ -101,6 +101,12 @@ def push_contributions(event):
     master or gh-pages branch, 0 otherwise."""
 
     repo = event['repo']['name']
+    username = event['actor']['login']
+
+    try:
+        name = UserProfile.objects.get(user__username=username).name
+    except UserProfile.DoesNotExist:
+        name = ""
     count = 0
 
     # Try to check if the repository is in database and if it is forked
@@ -114,7 +120,9 @@ def push_contributions(event):
     if not forked:
         branch = event['payload']['ref'].split('/')[-1]
         if branch in ['master', 'gh-pages']:
-            count += int(event['payload']['distinct_size'])
+            for commit in event['payload']['commits']:
+                if commit['author']['name'] in [name, username]:
+                    count += 1
 
     return count
 
