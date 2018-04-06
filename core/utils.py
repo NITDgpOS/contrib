@@ -175,7 +175,7 @@ def creation_contributions(event):
 def fork_creation_contributions(event):
     """Function to count contributions attributed to creating a repository by
     forking. Return 1 and save the repository object in the database."""
-    repo = event['payload']['forkee']['fullname']
+    repo = event['payload']['forkee']['full_name']
     username = event['actor']['login']
     try:
         user = UserProfile.objects.get(user__username=username)
