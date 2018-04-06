@@ -10,6 +10,7 @@ requests = "*"
 social-auth-app-django = "*"
 coverage = "*"
 flake8 = "*"
+django-crontab = "*"
 
 [dev-packages]
 
