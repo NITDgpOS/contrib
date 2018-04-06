@@ -201,5 +201,9 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 CRONJOBS = [
+    # Reset the user contributions at midnight every month
     ('0 0 1 * *', 'core.cron.reset_contributions'),
+
+    # Update the user contributions an hour past midnight daily
+    ('0 1 * * *', 'core.cron.update_user_contributions'),
 ]
