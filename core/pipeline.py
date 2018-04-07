@@ -7,4 +7,7 @@ def save_profile(backend, user, response, *args, **kwargs):
         try:
             UserProfile.objects.get(user=user)
         except UserProfile.DoesNotExist:
-            UserProfile.objects.create(user=user, name=response.get('name'))
+            UserProfile.objects.create(
+                user=user, name=response['name'],
+                avatar=response['avatar_url']
+            )

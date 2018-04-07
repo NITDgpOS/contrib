@@ -8,6 +8,7 @@ class UserProfile(models.Model):
     contributions = models.IntegerField(default=0)
     contribution_points = models.IntegerField(default=0)
     last_updated = models.DateTimeField(null=True)
+    avatar = models.URLField(max_length=150, null=True)
 
     def __str__(self):
         return self.user.username
