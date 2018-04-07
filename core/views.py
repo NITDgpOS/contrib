@@ -15,5 +15,10 @@ class HomeView(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['is_authenticated'] = self.request.user.is_authenticated
-        context['current_user'] = self.request.user
+        if self.request.user.is_authenticated:
+            context['current_user'] = UserProfile.objects.get(
+                user=self.request.user
+            )
+        else:
+            context['current_user'] = None
         return context
