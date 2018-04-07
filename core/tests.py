@@ -4,7 +4,7 @@ import datetime
 from django.test import TestCase, Client
 from unittest.mock import patch
 from django.urls import reverse
-from django.contrib.auth.models import User, AnonymousUser
+from django.contrib.auth.models import User
 
 from core.models import UserProfile
 from core.pipeline import save_profile
@@ -55,7 +55,9 @@ class SaveProfilePipelineTestCase(TestCase):
     """Test the save_profile pipeline."""
 
     def setUp(self):
-        self.response = {'name': "Test User"}
+        self.response = {
+            'name': "Test User", 'avatar_url': "https://github.com/test"
+        }
         self.test_user = User.objects.create_user(
             username='testuser',
             password='12345678'
@@ -130,8 +132,8 @@ class HomeViewTestCase(TestCase):
     def test_other_context_when_logged_out(self):
         response = self.client.get(reverse('index'))
         self.assertFalse(response.context['is_authenticated'])
-        self.assertTrue(
-            isinstance(response.context['current_user'], AnonymousUser)
+        self.assertEqual(
+            response.context['current_user'], None
         )
 
     def test_other_context_when_logged_in(self):
@@ -139,6 +141,6 @@ class HomeViewTestCase(TestCase):
         response = self.client.get(reverse('index'))
         self.assertTrue(response.context['is_authenticated'])
         self.assertEqual(
-            response.context['current_user'].username,
+            response.context['current_user'].user.username,
             'testuser1'
         )
