@@ -108,7 +108,7 @@
             {% endif %}
               <th scope="row">{{forloop.counter}}</th>
               <td>{{ user.name }}</td>
-              <td><a href="https://github.com/{{ user.user.username }}">@{{ user.user.username }}</a></td>
+              <td><a href="https://github.com/{{ user.user.username }}">{{ user.user.username }}</a></td>
               <td align="center">{{ user.contributions }}</td>
               <td>N/A</td>
             </tr>
@@ -132,16 +132,16 @@
             <div class="row justify-content-between">
 
               <!-- First column -->
-              <div class="col-md-7 d-none d-md-block">
-                <h4 class="text-uppercase mb-4">About</h4>
+              <div class="col-sm-7">
+                <h4 class="text-uppercase mb-4 text-center text-sm-left">About</h4>
                 <p class="text-justify">This app aims to improve the development culture in your college by giving the much needed recognition to the developers and motivating them thus. Contrib uses the GitHub API to track user contributions on GitHub. Track the development of the app on <a class="blue-text" href="https://github.com/ankan17/contrib">GitHub.</a></p>
               </div>
               <!-- First column -->
 
               <!-- Second column -->
-              <div class="col-md-4 d-none d-md-block">
-                <h4 class="text-uppercase mb-4">Contact</h4>
-                <p><i class="fa fa-envelope mr-2"></i> friendyankan@gmail.com</p>
+              <div class="col-sm-5 col-md-4 d-none d-sm-block">
+                <h4 class="text-uppercase mb-4 text-center text-sm-left">Contact</h4>
+                <p><i class="fa fa-envelope mr-2"></i><a href="mailto:friendyankan@gmail.com">friendyankan@gmail.com</a>
                 <p><i class="fa fa-whatsapp mr-2"></i> +91 98045 17793</p>
                 <p><i class="fa fa-comment mr-2"></i><a href="https://gitter.im/ankan17">gitter.im/ankan17</a></p>
               </div>
