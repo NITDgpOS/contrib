@@ -1,0 +1,70 @@
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+}
+
+body > .container-fluid {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.container {
+  max-width: 900px;
+}
+
+body > .container-fluid > .container {
+  padding-top: 40px;
+  padding-bottom: 40px;
+}
+
+/* ------------ Navbar ------------ */
+
+.navbar .dropdown-menu {
+  padding-bottom: 0.3rem;
+  font-size: 0.875em;
+}
+
+.navbar .dropdown-menu p {
+  margin-bottom: 0;
+  padding: 5px 10px;
+  font-size: inherit;
+  color: #586069;
+}
+
+.navbar .dropdown-menu a {
+  padding: 5px 10px;
+  font-size: inherit;
+}
+
+.navbar .login-button {
+  font-weight: 400;
+  font-size: 1.1rem;
+}
+
+.navbar .avatar {
+  height: 25px;
+  border-radius: 5px;
+}
+
+/* ------------ End of Navbar ------------ */
+
+
+/* ------------ Footer ------------ */
+
+footer.page-footer {
+  color: #212121;
+  border-top: 1px solid rgb(234, 236, 239);
+}
+
+footer.page-footer a {
+  color: #212121;
+}
+
+footer.page-footer .fa-heart {
+  color: red;
+}
+
+footer.page-footer .made-by {
+  font-size: 1.375rem;
+}
+
+/* ------------ End of footer ------------ */
