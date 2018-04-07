@@ -200,6 +200,8 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+STATIC_ROOT = os.path.join(BASE_DIR, "static")
+
 CRONJOBS = [
     # Reset the user contributions at midnight every month
     ('0 0 1 * *', 'core.cron.reset_contributions'),
