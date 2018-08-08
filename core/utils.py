@@ -9,11 +9,19 @@ from core.models import UserProfile, Repository
 
 def get_repositories(username):
     """Returns the repositories of a user using the Github API."""
-    repos_url = 'https://api.github.com/users/{}/repos'.format(username)
-    response = requests.get(repos_url)
+    repos_url = 'https://api.github.com/users/{}/repos?\
+    per_page=100&page='.format(username)
+    page = 1
     repos = []
-    if response.status_code == 200:
-        repos = response.json()
+    while True:
+        response = requests.get(repos_url+str(page))
+        if response.status_code == 200:
+            if len(response.json()) == 0:
+                break
+            repos.extend(response.json())
+            if len(response.json()) < 100:
+                break
+        page += 1
     return repos
 
 
